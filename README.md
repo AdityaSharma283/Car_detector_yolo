@@ -3,6 +3,21 @@
 This project detects cars in images and classifies their model using a ResNet-based deep learning model. Built with Python, Streamlit, and integrated with Kaggle datasets for training.
 
 ---
+## 📸 Screenshots
+
+### 🔍 Car Detection Interface
+
+![Screenshot 1](Screenshots/Screenshot%202025-06-22%20095326.png)
+
+### 🧠 Model Classification Output
+
+![Screenshot 2](Screenshots/Screenshot%202025-06-22%20095334.png)
+
+### 📊 Market Trend Visualization
+
+![Screenshot 3](Screenshots/Screenshot%202025-06-22%20095343.png)
+
+---
 
 ## ⚙️ Features
 
