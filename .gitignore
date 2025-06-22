@@ -1,0 +1,30 @@
+
+---
+
+### ✅ `.gitignore`
+
+```gitignore
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Streamlit temp
+.temp.jpg
+
+# VS Code settings
+.vscode/
+
+# Mac/Unix/Windows specific
+.DS_Store
+Thumbs.db
+
+# Kaggle API key (keep this secure!)
+.kaggle/
