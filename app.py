@@ -244,6 +244,14 @@ def display_car_info(car_data):
     """, unsafe_allow_html=True)
 
 # Handle file upload
+# Initialize uploaded_file to avoid NameError
+uploaded_file = None
+
+# Track image upload/capture state
+if "image_uploaded" not in st.session_state:
+    st.session_state.image_uploaded = False
+
+# Handle file upload
 if option == "📤 Upload Image":
     st.subheader("📤 Upload Your Car Image")
     uploaded_file = st.file_uploader(
@@ -251,40 +259,43 @@ if option == "📤 Upload Image":
         type=["jpg", "jpeg", "png"],
         help="Upload a clear image of the car for best results"
     )
-    
-if uploaded_file:
-    # Create columns for image display
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
+
+    if uploaded_file:
         image = Image.open(uploaded_file)
-        st.image(image, caption='🖼️ Uploaded Car Image', use_container_width=True)
-
-        # Convert RGBA to RGB if needed
-        if image.mode == 'RGBA':
-            image = image.convert('RGB')
-
-        # Save the image
+        if image.mode == "RGBA":
+            image = image.convert("RGB")
         image.save(TEMP_IMAGE_PATH)
-        st.success("✅ Image successfully uploaded and ready for analysis!")
+        st.session_state.image_uploaded = True
+        st.success("✅ Image successfully uploaded!")
 
 # Handle webcam input
 elif option == "📷 Use Webcam":
     st.subheader("📷 Capture from Webcam")
-    st.info("👆 Click 'Start' below to activate your webcam and capture a car image.")
-    
-    class VideoTransformer(VideoTransformerBase):
-        def transform(self, frame):
-            img = frame.to_ndarray(format="bgr24")
-            cv2.imwrite(TEMP_IMAGE_PATH, img)
-            return img
+    picture = st.camera_input("Capture a car image")
 
-    webrtc_streamer(key="car_capture", video_transformer_factory=VideoTransformer)
-
-    if os.path.exists(TEMP_IMAGE_PATH):
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            st.image(TEMP_IMAGE_PATH, caption="📸 Captured Image", use_container_width=True)
+    if picture:
+        image = Image.open(picture)
+        if image.mode == "RGBA":
+            image = image.convert("RGB")
+        image.save(TEMP_IMAGE_PATH)
+        st.session_state.image_uploaded = True
         st.success("✅ Image captured successfully!")
+
+# Show image preview and removal option
+if st.session_state.image_uploaded and os.path.exists(TEMP_IMAGE_PATH):
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image(TEMP_IMAGE_PATH, caption="🖼️ Selected Car Image", use_container_width=True)
+
+    col_remove, col_space = st.columns([1, 4])
+    with col_remove:
+        if st.button("🗑️ Remove Image"):
+            os.remove(TEMP_IMAGE_PATH)
+            st.session_state.image_uploaded = False
+            st.success("✅ Image removed. You can upload or capture a new one.")
+            st.rerun()
+
+
 
 # Prediction and data display
 if os.path.exists(TEMP_IMAGE_PATH) and st.button("🔍 Analyze Car", type="primary", use_container_width=True):
