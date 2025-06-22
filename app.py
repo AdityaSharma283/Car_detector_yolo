@@ -252,13 +252,18 @@ if option == "📤 Upload Image":
         help="Upload a clear image of the car for best results"
     )
     
-    if uploaded_file:
-        # Create columns for image display
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            image = Image.open(uploaded_file)
-            st.image(image, caption='🖼️ Uploaded Car Image', use_container_width=True)
-        
+if uploaded_file:
+    # Create columns for image display
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        image = Image.open(uploaded_file)
+        st.image(image, caption='🖼️ Uploaded Car Image', use_container_width=True)
+
+        # Convert RGBA to RGB if needed
+        if image.mode == 'RGBA':
+            image = image.convert('RGB')
+
+        # Save the image
         image.save(TEMP_IMAGE_PATH)
         st.success("✅ Image successfully uploaded and ready for analysis!")
 
@@ -335,7 +340,6 @@ st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #666; padding: 2rem;">
     <p>🚗 Car Model & Price Detector | Powered by AI 🤖</p>
-    <p>Made with ❤️ using Streamlit, PyTorch & Gemini AI</p>
 </div>
 """, unsafe_allow_html=True)
 
