@@ -26,7 +26,7 @@ def get_car_info(predicted_name):
         "Transmission": top_match['Gear_box_type'],
         "Drive": top_match['Drive_wheels'],
         "KM Driven": top_match['Mileage'],
-        "Average Price ($)": f"{avg_price:,.0f}"
+        "Average_Price_(₹)": f"{avg_price:,.0f}"
     }
     return info
 

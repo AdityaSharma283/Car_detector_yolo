@@ -166,7 +166,7 @@ def display_car_info(car_data):
         car_data = car_data[0]  # Take first item if it's a list
     
     # Try different possible price key names
-    price_keys = ['Average_Price_(₹)', 'Average Price (₹)', 'price', 'Price', 'average_price', 'Average_Price']
+    price_keys = ['Average_Price_(₹)', 'Average Price (₹)', 'Average Price ($)', 'price', 'Price', 'average_price', 'Average_Price']
     price_value = 'N/A'
     
     for key in price_keys:
